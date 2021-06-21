@@ -14,6 +14,8 @@ def home():
         two_stars = int(ratingstore['two_stars'])
         one_star = int(ratingstore['one_star'])
         count = int(ratingstore['count'])
+        rating = float(ratingstore['rating'])
+        total = int(ratingstore['total'])
         if 'rating' in request.form:
             content = int(request.form['rating'])
             if content:
@@ -28,16 +30,19 @@ def home():
                 elif content == 1:
                     one_star += 1
                 count += 1
+                total += content
+                rating = float('{0:.1f}'.format(total/count))
         ratingstore['five_stars'] = str(five_stars)
         ratingstore['four_stars'] = str(four_stars)
         ratingstore['three_stars'] = str(three_stars)
         ratingstore['two_stars'] = str(two_stars)
         ratingstore['one_star'] = str(one_star)
         ratingstore['count'] = str(count)
+        ratingstore['total'] = str(total)
+        ratingstore['rating'] = str(rating)
         with open('ratings_so_far.json', 'w') as f:
             json.dump(ratingstore, f, indent=2)
-    print(ratingstore)
-    return render_template('star_rating.html', five_stars=ratingstore['five_stars'], four_stars=ratingstore['four_stars'], three_stars=ratingstore['three_stars'] , two_stars=ratingstore['two_stars'] , one_star=ratingstore['one_star'], count=ratingstore['count'])
+    return render_template('star_rating.html', five_stars=ratingstore['five_stars'], four_stars=ratingstore['four_stars'], three_stars=ratingstore['three_stars'], two_stars=ratingstore['two_stars'], one_star=ratingstore['one_star'], count=ratingstore['count'], rating=ratingstore['rating'])
 
 
 if __name__ == "__main__":
